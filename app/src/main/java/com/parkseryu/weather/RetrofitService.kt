@@ -1,6 +1,7 @@
 package com.parkseryu.weather
 
 import com.google.gson.JsonObject
+import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -14,5 +15,6 @@ interface RetrofitService {
         @Query("exclude") exclude: String,
         @Query("APPID") APPID: String
     )
-            : Call<JsonObject>
+            : Call<WeatherResponse>
+
 }

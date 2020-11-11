@@ -16,7 +16,7 @@ class RetrofitClient {
     fun buildRetrofit() : RetrofitService{
         val retrofit: Retrofit? = Retrofit.Builder()
             .baseUrl("http://api.openweathermap.org/data/2.5/")
-            .addConverterFactory(GsonConverterFactory.create()) //
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val service: RetrofitService = retrofit!!.create(RetrofitService :: class.java)
