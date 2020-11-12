@@ -1,17 +1,15 @@
 package com.parkseryu.weather
 
-import com.google.gson.annotations.SerializedName
 
 data class RecyclerItem(
-    @SerializedName("dt") var date: String,
-    @SerializedName("min")var min: Int,
-    @SerializedName("max")var max: Int,
-    @SerializedName("humidity") var humidity: Int,
-    @SerializedName("pop")var pop: Long,
-    @SerializedName("location")var location: String,
-
-    @SerializedName("main")var main: String,
-    @SerializedName("sunrise")var sunrise: String,
-    @SerializedName("sunset")var sunset: String,
-    @SerializedName("icon")var iconUrl: String
+    var date: String,
+    var min: Int,
+    var max: Int,
+    var humidity: Int,
+    var pop: Long,
+    var location: String,
+    var main: String,
+    var sunrise: String,
+    var sunset: String,
+    var iconUrl: String
 )

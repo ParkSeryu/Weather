@@ -17,11 +17,11 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-       <ImageView
+        <ImageView
             android:id="@+id/imv"
             android:layout_width="50dp"
-            android:layout_marginStart="5dp"
             android:layout_height="80dp"
+            android:layout_marginStart="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_dt" />
@@ -57,10 +57,10 @@
             android:id="@+id/tv_pop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="강수량"
             android:ellipsize="end"
-            app:layout_constraintLeft_toLeftOf="@id/tv_sunrise"
-            app:layout_constraintBottom_toTopOf="@id/tv_sunrise" />
+            android:text="강수량"
+            app:layout_constraintBottom_toTopOf="@id/tv_sunrise"
+            app:layout_constraintLeft_toLeftOf="@id/tv_sunrise" />
 
 
         <TextView
@@ -92,15 +92,15 @@
             android:layout_marginStart="20dp"
             android:text="일몰시간 :"
             app:layout_constraintLeft_toRightOf="@id/tv_main"
-            app:layout_constraintTop_toBottomOf="@id/tv_sunrise"
-            />
+            app:layout_constraintTop_toBottomOf="@id/tv_sunrise" />
 
         <TextView
             android:id="@+id/tv_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@id/tv_sunset"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="지역"/>
+            android:text="지역"
+            app:layout_constraintTop_toBottomOf="@id/tv_sunset"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_sunset" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
