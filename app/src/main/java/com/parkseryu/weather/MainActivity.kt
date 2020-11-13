@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
@@ -117,7 +118,11 @@ class MainActivity : AppCompatActivity() {
             gpsLocationListener
         )
         Log.d("ttest", "$lat, $lon")
-        getWeather()
+        val call: Call<WeatherResponse> =
+            RetrofitClient.getInstance().buildRetrofit().getWeather(lat, lon, exclude, KEY)
+        val asynchronous = Asynchronous()
+        asynchronous.execute(call)
+
     }
 
     val gpsLocationListener = LocationListener { location ->
@@ -126,28 +131,22 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-    fun getWeather() {
+    inner class Asynchronous : AsyncTask<Call<WeatherResponse>, Void, Boolean>() {
         val data = mutableListOf<RecyclerItem>()
 
+        val progressDialog = ProgressDialog(this@MainActivity)
 
-        class test : AsyncTask<Void, Void, String>(){
-            val progressDialog = ProgressDialog(this@MainActivity)
+        override fun onPreExecute() {
+            progressDialog.setMessage("Loading...")
+            progressDialog.setCancelable(true)
+            progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Horizontal)
+            progressDialog.show()
+        }
 
-            override fun onPreExecute() {
-                progressDialog.setMessage("Loading...")
-                progressDialog.setCancelable(true)
-                progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Horizontal)
-                progressDialog.show()
-            }
-
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun doInBackground(vararg params: Void?): String {
-                val call: Call<WeatherResponse> =
-                    RetrofitClient.getInstance().buildRetrofit().getWeather(lat, lon, exclude, KEY)
-                Log.d("test3","ttt")
-                val weatherResponse = call.execute().body()
-
+        override fun doInBackground(vararg params: Call<WeatherResponse>?): Boolean {
+            val call = params[0]
+            val weatherResponse = call?.execute()?.body()
+            try { Log.d("what", "${weatherResponse!!.daily.toString().length}")
                 for (i in 0..7) {
                     val dt = weatherResponse!!.daily[i].dt
                     val location = weatherResponse.timezone
@@ -165,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                     val date = sdf.format(dt * 1000L)
 
                     val sdf2 = SimpleDateFormat("HH시 mm분 ")
-                    val sunrise = sdf2.format(sunrise_o * 1000L )
+                    val sunrise = sdf2.format(sunrise_o * 1000L)
                     val sunset = sdf2.format(sunset_o * 1000L)
 
 
@@ -193,30 +192,39 @@ class MainActivity : AppCompatActivity() {
 
                     Log.d("test", "$date, $min, $main")
                 }
-
-                return "success"
+                return true
+            } catch (e: Exception) {
+                return false
             }
+        }
 
-            override fun onPostExecute(result: String?) {
-                super.onPostExecute(result)
-                progressDialog.dismiss()
-
+        override fun onPostExecute(result: Boolean?) {
+            super.onPostExecute(result)
+            progressDialog.dismiss()
+            if (result == true) {
                 val adapter = RecyclerViewAdapter()
                 adapter.listData = data
 
                 recyclerView.layoutManager = LinearLayoutManager(applicationContext)
                 recyclerView.adapter = adapter
-                recyclerView.addItemDecoration(DividerItemDecoration(applicationContext, R.drawable.line_divider ,0, 0))
-
-                Log.d("test1", "$result")
+                recyclerView.addItemDecoration(
+                    DividerItemDecoration(
+                        applicationContext,
+                        R.drawable.line_divider,
+                        0,
+                        0
+                    )
+                )
+            } else {
+                Toast.makeText(this@MainActivity, "error", Toast.LENGTH_LONG).show()
             }
+
+
         }
-
-       val result = test()
-       result.execute()
-
     }
+
 }
+
 
 ///비동기식
 /*  call.enqueue(object : Callback<WeatherResponse> {
