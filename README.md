@@ -6,4 +6,3 @@ Programming Language : Kotlin
 Library : Retrofit2, Glide
 
 Api : OpenWeatherApi
-
